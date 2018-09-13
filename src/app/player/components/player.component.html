@@ -1,0 +1,45 @@
+<div class="container">
+
+    <div class="row m-3">
+        <label for="playerName" class="col-xsm-4 col-form-label">Player</label>
+        <div class="col-xsm-4 ml-2">
+            <input type="text" [(ngModel)]="addPlayerName"  class="form-control" id="playerName" name="playerName" style="width:160px;" >
+        </div>
+        <div class="col-xsm-4 ml-2">
+            <button id="addPlayer" type="button" class="btn btn-primary pull-right" (click)="onAddPlayer()">Add</button>
+        </div>                
+    </div>
+    
+    <div class="row m-3" *ngFor="let player of players" >
+        <label for="playerScores" class="col-xsm-3 col-form-label" style="min-width:70px;">{{player.name}}</label>
+        <div class="col-xsm-1 col-form-label ml-2" style="min-width: 35px;">
+            {{player.score}}
+        </div>
+        <div class="col-xsm-1 col-form-label ml-2">
+            <i class="fa fa-plus"></i>
+        </div>
+        <div class="col-xsm-2 ml-2">
+            <input type="text" [(ngModel)]="player.addScore" class="form-control" id="playerScores" name="playerScores" style="width:55px;" >                             
+        </div>              
+        <div class="col-xsm-2 ml-2">
+            <button class="btn btn-primary pull-right" (click)="onAddScores(player)">=</button>                                                                                                
+        </div>
+        <div class="col-xsm-1 col-form-label ml-2" style="min-width: 35px;">
+            {{player.score}}
+        </div>
+        <div class="col-xsm-1 ml-2">
+            <button class="btn" (click)="onDeletePlayer(player)"><i class="fa fa-remove"></i></button>
+        </div>
+    </div>
+            
+
+    <div class="row m-3" *ngIf="players.length">
+        <div class="col-xsm-6">
+            <button class="btn btn-primary" (click)="onClearScores()">Clear Scores</button>                                                                
+        </div>            
+        <div class="col-xsm-6 ml-2">
+            <button class="btn btn-primary" (click)="onClearPlayers()">Clear Players</button>                                                                
+        </div>
+    </div>
+
+</div>
