@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="row">
+    <div class="row pt-2">
         <div class="col-12">
             <input type="text" [(ngModel)]="addPlayerName" class="form-control" id="playerName" name="playerName">
         </div>
@@ -15,7 +15,9 @@
             <div class="card-header">
                 <a class="card-link d-flex justify-content-between" data-toggle="collapse" href="#collapseOne{{player.name}}">
                     <span class="align-self-center">
-                        <button class="btn btn-secondary" (click)="onDeletePlayer(player)"><i class="fa fa-remove"></i></button>
+                        <button class="btn btn-secondary"  data-toggle="modal" [attr.data-target]="'#' + confirmRemovePlayerId + player.name" ><i class="fa fa-remove"></i></button>
+                        <confirm [dataTarget]="confirmRemovePlayerId + player.name" [header]="confirmRemovePlayerHeader" [body]="confirmRemovePlayerBody" [data]="player" (onConfirm)="onRemovePlayer($event)"></confirm>
+                                            
                         {{player.name}}
                     </span>
                     <span class="badge badge-success align-self-center">
@@ -25,23 +27,28 @@
                 </a>
             </div>
             <div id="collapseOne{{player.name}}" class="collapse" data-parent="#accordion">
-                <div class="row d-flex">
-                    <div class="col-8 pr-0">
+                <div class="flex-row d-flex">
+                    <div class="col-8 pl-0 pr-0 ml-0 mr-0">
                         <input type="text" [(ngModel)]="player.addScore" class="form-control" id="playerName" name="playerScores">
                     </div>
-                    <div class="col-4 p-0">
-                        <button id="addScores" type="button" class="btn btn-primary btn-block" (click)="onAddScores(player)">Add
-                            Scores</button>
+                    <div class="col-4 pl-0 pr-0 ml-0 mr-0">
+                        <a id="addScores" type="button" class="btn btn-primary btn-block" data-toggle="collapse"  href="#collapseOne{{player.name}}" (click)="onAddScores(player)">
+                            Add Scores
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row pt-3 d-flex justify-content-left" *ngIf="players.length">
-        <div class="col-12">
-            <button class="btn btn-primary mr-2" (click)="onClearScores()">Clear Scores</button>
-            <button class="btn btn-primary" (click)="onClearPlayers()">Clear Players</button>        
-        </div>        
-    </div>
+    
+    <div class="clear"></div>    
+
+    <confirm [dataTarget]="confirmClearScoresId" [header]="confirmClearScoresHeader" [body]="confirmClearScoresBody" [data]="player" (onConfirm)="onClearScores($event)"></confirm>        
+    <confirm [dataTarget]="confirmClearPlayersId" [header]="confirmClearPlayersHeader" [body]="confirmClearPlayersBody" [data]="player" (onConfirm)="onNewGame($event)"></confirm>
+
+    <nav class="navbar fixed-bottom navbar-light bg-light" *ngIf="players.length">
+        <button class="btn btn-primary mr-2"  data-toggle="modal" [attr.data-target]="'#' + confirmClearScoresId" >Clear Scores</button>        
+        <button class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#' + confirmClearPlayersId" >New Game</button>
+    </nav>
 </div>

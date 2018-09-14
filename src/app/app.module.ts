@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/components/player.component';
+import { ConfirmModalComponent } from './player/components/confirm-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerComponent
+    PlayerComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,

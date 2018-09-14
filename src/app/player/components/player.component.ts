@@ -3,7 +3,8 @@ import { PlayerModel } from '../models/player.model';
 
 @Component({
   selector: 'player',
-  templateUrl: 'player.component.html'
+  templateUrl: 'player.component.html',
+  styleUrls: ['player.component.css']
 })
 export class PlayerComponent {
 
@@ -11,6 +12,19 @@ export class PlayerComponent {
     players: Array<PlayerModel> = [];
 
     localStorageKey = '[players]';
+
+    confirmRemovePlayerId: string = "confirmRemovePlayerModalIff";
+    confirmRemovePlayerHeader: string = "Delete Player";
+    confirmRemovePlayerBody: string = "Are you sure you want to delete the player?";
+
+    confirmClearPlayersId: string = "confirmClearPlayersId";
+    confirmClearPlayersHeader: string = "New Game";
+    confirmClearPlayersBody: string = "Are you sure you want to start a new game?";
+
+    confirmClearScoresId: string = "confirmClearScoresId";
+    confirmClearScoresHeader: string = "Clear Scores";
+    confirmClearScoresBody: string = "Are you sure you want to clear the scores?";
+
 
     constructor() {
         this.players = this.getPlayersData();
@@ -32,6 +46,10 @@ export class PlayerComponent {
     }
 
     onAddScores(player: PlayerModel){        
+        if (!player.addScore){
+            return;
+        }
+
         if (!this.isNumber(player.addScore)){
             return;
         }
@@ -45,31 +63,21 @@ export class PlayerComponent {
         this.savePlayersData();
     }
 
-    onClearPlayers(){
-        if (!confirm('Are you sure you want to clear the players & scores?')){
-            return;
-        }
-
+    onNewGame(){
         this.players = [];
 
         this.savePlayersData();
     }
 
     onClearScores(){
-        if (!confirm('Are you sure you want to clear the scores?')){
-            return;
-        }
-
         this.players.forEach( player => { player.score = 0; player.addScore = null; });        
 
         this.savePlayersData();
     }
 
 
-    onDeletePlayer(player){
-        if (!confirm('Are you sure you want to delete the player?')){
-            return;
-        }
+    onRemovePlayer(player){
+ 
         this.players = this.players.filter( p => p.name !== player.name);
 
         this.savePlayersData();
