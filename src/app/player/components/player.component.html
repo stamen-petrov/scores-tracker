@@ -1,45 +1,47 @@
-<div class="container">
-
-    <div class="row m-3">
-        <label for="playerName" class="col-xsm-4 col-form-label">Player</label>
-        <div class="col-xsm-4 ml-2">
-            <input type="text" [(ngModel)]="addPlayerName"  class="form-control" id="playerName" name="playerName" style="width:160px;" >
-        </div>
-        <div class="col-xsm-4 ml-2">
-            <button id="addPlayer" type="button" class="btn btn-primary pull-right" (click)="onAddPlayer()">Add</button>
-        </div>                
-    </div>
-    
-    <div class="row m-3" *ngFor="let player of players" >
-        <label for="playerScores" class="col-xsm-3 col-form-label" style="min-width:70px;">{{player.name}}</label>
-        <div class="col-xsm-1 col-form-label ml-2" style="min-width: 35px;">
-            {{player.score}}
-        </div>
-        <div class="col-xsm-1 col-form-label ml-2">
-            <i class="fa fa-plus"></i>
-        </div>
-        <div class="col-xsm-2 ml-2">
-            <input type="text" [(ngModel)]="player.addScore" class="form-control" id="playerScores" name="playerScores" style="width:55px;" >                             
-        </div>              
-        <div class="col-xsm-2 ml-2">
-            <button class="btn btn-primary pull-right" (click)="onAddScores(player)">=</button>                                                                                                
-        </div>
-        <div class="col-xsm-1 col-form-label ml-2" style="min-width: 35px;">
-            {{player.score}}
-        </div>
-        <div class="col-xsm-1 ml-2">
-            <button class="btn" (click)="onDeletePlayer(player)"><i class="fa fa-remove"></i></button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <input type="text" [(ngModel)]="addPlayerName" class="form-control" id="playerName" name="playerName">
         </div>
     </div>
-            
-
-    <div class="row m-3" *ngIf="players.length">
-        <div class="col-xsm-6">
-            <button class="btn btn-primary" (click)="onClearScores()">Clear Scores</button>                                                                
-        </div>            
-        <div class="col-xsm-6 ml-2">
-            <button class="btn btn-primary" (click)="onClearPlayers()">Clear Players</button>                                                                
+    <div class="row pt-2">
+        <div class="col-12">
+            <button id="addPlayer" type="button" class="btn btn-primary btn-block" (click)="onAddPlayer()">Add Player</button>
         </div>
     </div>
 
+    <div id="accordion" style="font-size:2em">
+        <div class="card" *ngFor="let player of players">
+            <div class="card-header">
+                <a class="card-link d-flex justify-content-between" data-toggle="collapse" href="#collapseOne{{player.name}}">
+                    <span class="align-self-center">
+                        <button class="btn btn-secondary" (click)="onDeletePlayer(player)"><i class="fa fa-remove"></i></button>
+                        {{player.name}}
+                    </span>
+                    <span class="badge badge-success align-self-center">
+                        {{player.score}}
+                    </span>
+
+                </a>
+            </div>
+            <div id="collapseOne{{player.name}}" class="collapse" data-parent="#accordion">
+                <div class="row d-flex">
+                    <div class="col-8 pr-0">
+                        <input type="text" [(ngModel)]="player.addScore" class="form-control" id="playerName" name="playerScores">
+                    </div>
+                    <div class="col-4 p-0">
+                        <button id="addScores" type="button" class="btn btn-primary btn-block" (click)="onAddScores(player)">Add
+                            Scores</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-3 d-flex justify-content-left" *ngIf="players.length">
+        <div class="col-12">
+            <button class="btn btn-primary mr-2" (click)="onClearScores()">Clear Scores</button>
+            <button class="btn btn-primary" (click)="onClearPlayers()">Clear Players</button>        
+        </div>        
+    </div>
 </div>
