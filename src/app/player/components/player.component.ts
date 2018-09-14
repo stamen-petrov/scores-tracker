@@ -39,7 +39,7 @@ export class PlayerComponent {
             return;
         }
 
-        this.players.push({name: this.addPlayerName, score: 0, addScore: null});
+        this.players.push( new PlayerModel(this.addPlayerName, 0, null));
         this.addPlayerName = '';
 
         this.savePlayersData();
@@ -78,7 +78,7 @@ export class PlayerComponent {
 
     onRemovePlayer(player){
  
-        this.players = this.players.filter( p => p.name !== player.name);
+        this.players = this.players.filter( p => p.hashName !== player.hashName);
 
         this.savePlayersData();
     }
