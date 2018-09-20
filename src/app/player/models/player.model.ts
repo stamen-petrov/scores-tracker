@@ -1,18 +1,38 @@
 import { hashCode } from '../../utils/hash.string';
+import { PlayerHistoryItem } from './player_history_item.model';
 
-export class PlayerModel{
+export class PlayerModel {
 
-    name: string;
-    score: number;
-    addScore: number;
-    
-    constructor(public _name: string, public _score: number,public _addScore: number){
-        this.name = _name;
-        this.score = _score;
-        this._addScore = _addScore;
+    _hashName: number;
+    get hashName(){
+        return this._hashName;
+    }    
+
+    get name(){        
+        return this._name;
+    }
+    set name(value){
+        this._name = value;
+        this._hashName = hashCode(value);        
     }
 
-    get hashName(){
-        return hashCode(this.name);
+    get score(){
+        return this._score;
+    }
+    set score(value){
+        this._score = value;
+    }
+
+    get addScore(){
+        return this._addScore;
+    }
+    set addScore(value){
+        this._addScore = value;
+    }
+
+    playerHistory: Array<PlayerHistoryItem> = [];
+
+    constructor(private _name: string, private _score: number, private _addScore: number){
+        this._hashName = hashCode(_name);     
     }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PlayerModel } from '../models/player.model';
+import { PlayerHistoryItem } from '../models/player_history_item.model';
 
 @Component({
   selector: 'player',
@@ -57,8 +58,16 @@ export class PlayerComponent {
         if (!this.isInt(player.addScore)){
             return;
         }
-        player.score = +player.score + +player.addScore;
+
+        let playerScore =  +player.score;
+        let playerAddScore = +player.addScore;
+        let playerTotalScore = playerScore + playerAddScore;
+
+        let playerHistoryItem = new PlayerHistoryItem(playerScore, playerAddScore, playerTotalScore);
+
+        player.score = playerScore + playerAddScore;
         player.addScore = null;
+        player.playerHistory.push(playerHistoryItem);
 
         this.savePlayersData();
     }
@@ -70,7 +79,7 @@ export class PlayerComponent {
     }
 
     onClearScores(){
-        this.players.forEach( player => { player.score = 0; player.addScore = null; });        
+        this.players.forEach( player => { player.score = 0; player.addScore = null, player.playerHistory = []; });        
 
         this.savePlayersData();
     }
@@ -84,16 +93,33 @@ export class PlayerComponent {
     }
 
     savePlayersData(){
+        
         localStorage.setItem(this.localStorageKey, JSON.stringify(this.players));
     }
 
-    getPlayersData(): Array<PlayerModel> {
+    getPlayersData(): Array<PlayerModel> {        
+        
         let playersStorage = localStorage.getItem(this.localStorageKey);
         if (!playersStorage){
             return new Array<PlayerModel>();
         }
         else{
-            return JSON.parse(playersStorage);
+            let rawPlayersArray = JSON.parse(playersStorage);
+            let playersArray: Array<PlayerModel> = [];
+            rawPlayersArray.forEach(player => {
+                let currentPlayer = new PlayerModel(player._name, player._score, player._addScore);
+                if (player.playerHistory){
+                    player.playerHistory.forEach(item => {
+                        let playerHistoryItem = new PlayerHistoryItem(item.previousScore, item.currentScore, item.totalScore);
+                        currentPlayer.playerHistory.push(playerHistoryItem); 
+                     });     
+                }
+                else{
+                    player.playerHistory = new Array<PlayerHistoryItem>();
+                }
+                playersArray.push(currentPlayer);                
+            });
+            return playersArray;
         }        
     }    
 
